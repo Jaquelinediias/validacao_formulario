@@ -1,39 +1,83 @@
 let validador = {
-    identificadorSubmit:(event)=>{
-      event.preventDefault();
-      let enviar = true;
+  identificadorSubmit:(event)=>{
+    event.preventDefault();
+    let enviar = true;
 
-      let inputs = form.querySelectorAll('input')
-        for (let i = 0; i < inputs.length; i++) {
-           let input = inputs[i];  
-           let verificar = validador.verificarInpunt(input);
-           if(verificar !== true){
-              enviar = false;
-              // exibir o erro
-           }
+    let inputs = form.querySelectorAll('input')
 
-        }
+    validador.limparErros();
+
+
+    for (let i = 0; i < inputs.length; i++) {
+      let input = inputs[i];  
+      let verificar = validador.verificarInpunt(input);
+      if(verificar !== true) {
         enviar = false;
-
-      if(enviar){
-        form.submit();
+        validador.mostrarError(input, verificar)
       }
-    },
-    verificarInpunt:(input)=> {
-        let regras = input.getAttribute('data-rules')
-        if(regras !== null){
-            regras = regras.split('|')
-            for(let j in regras){
-                let rDetalhes = regras[j].split('=')
-                switch(rDetalhes[0]){
-                    case 'required':
 
-                    break
-
-                }
-            }
-        }
     }
+
+    if(enviar) {
+    form.submit();
+    }
+
+  },
+  verificarInpunt:(input)=> {
+    let regras = input.getAttribute('data-rules')
+
+    if(regras !== null) {
+      regras = regras.split('|')
+      for(let j in regras) {
+        let rDetalhes = regras[j].split('=')
+
+        switch(rDetalhes[0]){
+          case 'required':
+            if(input.value === ''){
+              return'Campo Obrigatório!'
+            }
+          break;
+          case 'min':
+            if(input.value.length< rDetalhes[1]){
+              return 'Campo conte pelo no máximo 8 '+rDetalhes[1]+'caracteres'
+            }
+          break;
+          case 'email':
+            if(input.value != ''){
+              let regex =  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+              if(!regex.test(input.value.toLowerCase())){
+                return'E-mail digitado não é valido!'
+              }
+            }
+          break
+        }
+      }
+    }
+    return true;
+  },
+  mostrarError:(input,error)=> {
+    input.style.borderColor = '#ff0000'
+
+    let errorElement = document.createElement('div')
+    errorElement.classList.add('error');
+    errorElement.innerHTML = error;
+
+    input.parentElement.insertBefore(errorElement, input.ElementSibling)
+
+  },
+  limparErros:()=>{
+    let inputs = form.querySelectorAll('input');
+    for(let i= 0; i < inputs.length; i++) {
+      inputs[i].style = ''
+      
+    }
+
+    let errorElements = document.querySelectorAll('.error');
+    for (let i = 0; i < errorElements.length; i++) {
+      errorElements[i].remove();
+    }
+
+  }
 }
 let form= document.querySelector('.validador');
 form.addEventListener('submit', validador.identificadorSubmit)
