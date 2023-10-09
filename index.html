@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="tela">
+        <div class="lado_esquerdo">
+           <img src="imagen/img-1.jpg" alt="">
+        </div>
+        <div class="lado_direito">
+            <h1>Crie Sua Conta</h1>
+            <form action="POST" class="validador">
+                <label>
+                  Seu nome: <br/>
+                 <input type="text" name="name" data-rules="required|min=3"> 
+               </label>
+
+               <label>
+                 Seu e-mail:<br/>
+                 <input type="text" name="e-mail"> 
+               </label>
+
+               <label>
+                  Sua senha:<br/>
+                 <input type="password" name="password"> 
+               </label>
+
+               <label>
+                 <input type="submit" value="Cadastrar" class="btn"> 
+               </label>
+
+            </form>
+            
+            <div>
+                Já tem uma conta? <a href="#">Faça seu cadastro</a>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
